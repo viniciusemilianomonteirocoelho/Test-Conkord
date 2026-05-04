@@ -17,6 +17,105 @@ Portal de e-commerce de itens de moda
 
 Este documento descreve os principais casos de teste funcionais realizados na aplicação de e-commerce, incluindo cenários positivos e validações de interface.
 
+
+# Estratégia de Automação
+
+##  Automatizar API (Postman)
+
+- Listagem de produtos  
+- Ordenação (nome/preço)  
+- Carrinho (add/remove)  
+
+##  Automatizar Integração Backend ↔ Frontend
+
+- UI consumindo API corretamente  
+- Dados exibidos corretamente  
+
+##  Automatizar UI (Playwright)
+
+- Login  
+- Adicionar/remover produto  
+- Checkout básico  
+
+
+---
+
+#  Avaliação de Risco
+
+> Foco nos fluxos com maior impacto para o negócio.
+
+##  Fluxo de Login
+
+**Riscos:**
+- Usuário não autentica  
+- Sessão expira incorretamente  
+
+**Impacto:**
+- Bloqueia todo o funil de compra  
+
+**Prioridade:**  
+ ALTÍSSIMA (automatizar)
+
+
+---
+
+##  Adicionar Produto ao Carrinho
+
+**Riscos:**
+- Produto não é adicionado  
+- Quantidade incorreta  
+
+**Impacto:**
+- Usuário não consegue comprar → perda direta de receita  
+
+**Prioridade:**  
+ ALTÍSSIMA (automatizar)
+
+
+---
+
+##  Persistência do Carrinho
+
+**Riscos:**
+- Itens somem ao atualizar página  
+- Carrinho não mantém estado entre navegações  
+
+**Impacto:**
+- Abandono de compra  
+
+**Prioridade:**  
+ ALTÍSSIMA (automatizar)
+
+
+---
+
+##  Acesso ao Carrinho
+
+**Riscos:**
+- Ícone não atualiza  
+- Redirecionamento falha  
+
+**Impacto:**
+- Usuário não consegue finalizar compra  
+
+**Prioridade:**  
+ ALTA (automatizar)
+
+
+---
+
+##  Adicionar / Remover Produtos
+
+**Riscos:**
+- Duplicação de itens  
+- Remoção falha  
+- Estado inconsistente  
+
+**Impacto:**
+- Carrinho errado = cobrança errada = problema sério  
+
+**Prioridade:**  
+ ALTÍSSIMA (automatizar)
 ---
 
 ## 1.  Carregamento da Página de Produtos
