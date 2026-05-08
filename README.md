@@ -1,314 +1,231 @@
-# Test Conkord Swag Labs
+# Testes Funcionais — Swag Labs
 
-Portal de e-commerce de itens de moda
+## Objetivo
 
-## Funcionalidades
-- Login
-- Adicionar itens ao carrinho
-- Remover itens do carrinho
-- Menu com abas laterais
-- Validação de compra
-
-## Instalação
-
-### Pré-requisitos
-- Google Chrome instalado
-#  Casos de Teste – E-commerce
-
-Este documento descreve os principais casos de teste funcionais realizados na aplicação de e-commerce, incluindo cenários positivos e validações de interface.
-
-
-# Estratégia de Automação
-
-##  Automatizar API (Postman)
-
-- Listagem de produtos  
-- Ordenação (nome/preço)  
-- Carrinho (add/remove)  
-
-##  Automatizar Integração Backend ↔ Frontend
-
-- UI consumindo API corretamente  
-- Dados exibidos corretamente  
-
-##  Automatizar UI (Playwright)
-
-- Login  
-- Adicionar/remover produto  
-- Checkout básico  
-
+Este documento apresenta cenários de testes funcionais, estratégia de automação, avaliação de riscos e reporte de bug da plataforma Swag Labs.
 
 ---
 
-#  Avaliação de Risco
+# Casos de Teste
 
-> Foco nos fluxos com maior impacto para o negócio.
+## CT01 — Carregamento da Página de Produtos
 
-##  Fluxo de Login
+### Funcionalidade
+Carregamento da página de produtos
 
-**Riscos:**
-- Usuário não autentica  
-- Sessão expira incorretamente  
+### Cenário: Carregamento da página com sucesso
 
-**Impacto:**
-- Bloqueia todo o funil de compra  
-
-**Prioridade:**  
- ALTÍSSIMA (automatizar)
-
+```gherkin
+Dado que o utilizador acede à página de inventário
+Quando a página termina de carregar
+Então a lista de produtos deve ser apresentada
+```
 
 ---
 
-##  Adicionar Produto ao Carrinho
+## CT02 — Adicionar Produtos ao Carrinho
 
-**Riscos:**
-- Produto não é adicionado  
-- Quantidade incorreta  
-
-**Impacto:**
-- Usuário não consegue comprar → perda direta de receita  
-
-**Prioridade:**  
- ALTÍSSIMA (automatizar)
-
-
----
-
-##  Persistência do Carrinho
-
-**Riscos:**
-- Itens somem ao atualizar página  
-- Carrinho não mantém estado entre navegações  
-
-**Impacto:**
-- Abandono de compra  
-
-**Prioridade:**  
- ALTÍSSIMA (automatizar)
-
-
----
-
-##  Acesso ao Carrinho
-
-**Riscos:**
-- Ícone não atualiza  
-- Redirecionamento falha  
-
-**Impacto:**
-- Usuário não consegue finalizar compra  
-
-**Prioridade:**  
- ALTA (automatizar)
-
-
----
-
-##  Adicionar / Remover Produtos
-
-**Riscos:**
-- Duplicação de itens  
-- Remoção falha  
-- Estado inconsistente  
-
-**Impacto:**
-- Carrinho errado = cobrança errada = problema sério  
-
-**Prioridade:**  
- ALTÍSSIMA (automatizar)
----
-
-## 1.  Carregamento da Página de Produtos
-
-### Cenário: Página carrega com sucesso
-**Dado** que o usuário acessa a página de inventário  
-**Quando** a página termina de carregar  
-**Então** a lista de produtos deve ser exibida  
-
-
-### Cenário: Elementos principais visíveis
-**Dado** que o usuário está na página  
-**Quando** a página é exibida  
-**Então** deve conter:
-- Título "Products"
-- Menu lateral disponível
-- Ícone do carrinho visível
-
----
-
-## 2.  Exibição dos Produtos
-
-### Cenário: Produtos possuem informações completas
-**Dado** que o usuário está na página de produtos  
-**Quando** os produtos são carregados  
-**Então** cada produto deve conter:
-- Nome
-- Preço
-- Imagem
-- Botão "Add to cart"
-
----
-
-### Cenário: Imagem do produto carregada corretamente
-**Dado** que o usuário visualiza um produto  
-**Quando** a imagem é exibida  
-**Então** ela não deve estar quebrada
-
----
-
-## 3.  Adicionar Produtos ao Carrinho
+### Funcionalidade
+Adicionar produtos ao carrinho
 
 ### Cenário: Adicionar um produto
-**Dado** que o usuário está na página de produtos  
-**Quando** clica em "Add to cart"  
-**Então** o produto é adicionado ao carrinho  
-E o ícone do carrinho exibe "1"
+
+```gherkin
+Dado que o utilizador está na página de produtos
+Quando clica em "Add to cart" de um produto
+Então o produto deve ser adicionado ao carrinho
+E o ícone do carrinho deve apresentar "1"
+```
 
 ---
 
-### Cenário: Adicionar múltiplos produtos
-**Quando** o usuário adiciona 6 produtos  
-**Então** o carrinho deve exibir "6"
+# Estratégia para Automação
+
+## Automação de API — Postman
+
+### Fluxos prioritários
+- Listagem de produtos
+- Ordenação por nome/preço
+- Carrinho (adicionar/remover produtos)
 
 ---
 
-### Cenário: Evitar duplicação
-**Dado** que o produto já foi adicionado  
-**Quando** tenta adicionar novamente  
-**Então** deve impedir duplicação ou alterar para "Remove"
+## Automação de Integração Backend + Frontend
+
+### Validações
+- UI a consumir a API corretamente
+- Dados apresentados corretamente na interface
 
 ---
 
-## 4.  Remover Produtos do Carrinho
+## Automação de UI — Playwright
 
-### Cenário: Remover produto
-**Dado** que o produto está no carrinho  
-**Quando** o usuário clica em "Remove"  
-**Então** o produto deve ser removido  
-E o contador atualizado
-
----
-
-### Cenário: Carrinho vazio
-**Dado** que não há produtos no carrinho  
-**Então** o ícone não deve exibir número
+### Fluxos prioritários
+- Login
+- Adicionar/remover produto
+- Checkout básico
 
 ---
 
-## 5.  Acesso ao Carrinho
+# Avaliação de Risco
 
-### Cenário: Abrir carrinho
-**Dado** que existem produtos no carrinho  
-**Quando** o usuário clica no ícone  
-**Então** deve ser redirecionado para a página do carrinho
+## Fluxo de Login
 
----
+### Riscos
+- Utilizador não autentica
+- Sessão expira incorretamente
 
-## 6.  Ordenação de Produtos
+### Impacto
+Bloqueia todo o funil de compra.
 
-### Cenário: Nome A-Z
-**Quando** seleciona "Name (A to Z)"  
-**Então** produtos aparecem em ordem crescente
-
-### Cenário: Nome Z-A
-**Quando** seleciona "Name (Z to A)"  
-**Então** produtos aparecem em ordem decrescente
-
-### Cenário: Preço crescente
-**Quando** seleciona "Price low to high"  
-**Então** produtos aparecem do menor para o maior preço
-
-### Cenário: Preço decrescente
-**Quando** seleciona "Price high to low"  
-**Então** produtos aparecem do maior para o menor preço
+### Prioridade
+🔴 ALTÍSSIMA — Automatizar
 
 ---
 
-## 7. Layout Responsivo
+## Adicionar Produto ao Carrinho
 
-### Cenário: Visualização em mobile
-**Dado** que o usuário usa um dispositivo móvel  
-**Então**:
-- Layout deve se adaptar à tela
-- Botões devem continuar clicáveis
+### Riscos
+- Produto não é adicionado
+- Quantidade incorreta
 
----
+### Impacto
+O utilizador não consegue concluir a compra, causando perda direta de receita.
 
-## 8. Persistência de Estado
-
-### Cenário: Manter carrinho após refresh
-**Dado** que há produtos no carrinho  
-**Quando** a página é atualizada  
-**Então** os produtos permanecem no carrinho
+### Prioridade
+🔴 ALTÍSSIMA — Automatizar
 
 ---
 
-### Cenário: Menu lateral
-**Dado** que clico no menu lateral
-**Quando** o menu lateral é aberto  
-**Então** todos os itens devem funcionar corretamente
+## Persistência do Carrinho
 
-#  BUG 02 DO DOC – Expiração Inesperada de Sessão
+### Riscos
+- Itens desaparecem ao atualizar a página
+- Carrinho não mantém estado entre navegações
 
-##  Título
-Sessão expira com frequência na página de login, impedindo autenticação consistente
+### Impacto
+Abandono de compra.
 
----
-
-##  Ambiente de Teste
-- **Plataforma:** Swag Labs  
-- **URL:** https://saucedemo.com  
-- **Navegador:** Chrome  
-- **Dispositivo:** Desktop  
+### Prioridade
+🔴 ALTÍSSIMA — Automatizar
 
 ---
 
-##  Descrição
-A sessão do usuário expira ou é invalidada de forma prematura após o login.
+## Acesso ao Carrinho
 
-Mesmo utilizando credenciais válidas, o sistema encerra a sessão e redireciona o usuário para a página de login com erro.
+### Riscos
+- Ícone não atualiza
+- Redirecionamento falha
 
----
+### Impacto
+O utilizador não consegue finalizar a compra.
 
-##  Passos para Reproduzir
-1. Acessar a página de login  
-2. Inserir username e password válidos  
-3. Realizar login com sucesso  
-4. Aguardar alguns minutos na homepage  
-5. Atualizar a página ou interagir com o sistema  
+### Prioridade
+🟠 ALTA — Automatizar
 
 ---
 
-##  Resultado Atual
-- Usuário é redirecionado para a página de login  
-- Mensagem exibida:
+## Adicionar / Remover Produtos
 
-> Epic sadface: You can only access 'inventory.html' when you are logged in.
+### Riscos
+- Duplicação de itens
+- Remoção falha
+- Estado inconsistente
 
-- Sessão é encerrada automaticamente após curto período de inatividade  
+### Impacto
+Carrinho incorreto pode gerar cobrança errada e problemas críticos no fluxo de compra.
 
----
-
-##  Resultado Esperado
-- Usuário deve permanecer autenticado por um período normal de sessão  
-- A sessão não deve expirar rapidamente sem ação do usuário  
-- Navegação entre páginas deve ser estável  
+### Prioridade
+🔴 ALTÍSSIMA — Automatizar
 
 ---
 
-##  Impacto
-- Bloqueia fluxo de compra  
-- Impede execução de testes funcionais completos  
-- Afeta diretamente o fluxo principal (login → navegação → compra)  
+# Bug Report — BUG 02
+
+## Título
+Sessão expira com frequência na página de login impedindo autenticação consistente.
 
 ---
 
-##  Severidade
-Alta
+## Ambiente de Teste
+
+| Item | Informação |
+|---|---|
+| Plataforma | Swag Labs |
+| Navegador | Chrome |
+| Dispositivo | Desktop |
+| URL | https://saucedemo.com |
 
 ---
 
-##  Possíveis Causas (Hipóteses)
-- Token de sessão expirando prematuramente  
-- Problema no gerenciamento de cookies ou local storage  
-- Timeout de sessão configurado incorretamente  
+## Descrição
+
+Após um curto período, a sessão do utilizador expira, porém o sistema continua a tentar aceder à rota protegida `cart.html`.
+
+Em vez de redirecionar corretamente para a página de login ou renovar a sessão, a aplicação apresenta a seguinte mensagem:
+
+```text
+Epic sadface: You can only access '/cart.html' when you are logged in.
+```
+
+Isto indica uma falha no tratamento de sessão expirada e validação de autenticação na navegação entre rotas protegidas.
+
+---
+
+## Passos para Reproduzir
+
+1. Aceder à página de login
+2. Inserir username e password válidos
+3. Entrar na homepage
+4. Permanecer alguns minutos sem interação
+5. Atualizar a página
+
+---
+
+## Resultado Atual
+
+- A mensagem abaixo é apresentada:
+
+```text
+Epic sadface: You can only access 'inventory.html' when you are logged in.
+```
+
+- O login é realizado com sucesso
+- Após poucos minutos o utilizador é automaticamente desconectado
+
+---
+
+## Resultado Esperado
+
+- O utilizador deve permanecer autenticado por mais tempo
+- A sessão não deve expirar tão rapidamente
+- O sistema deve tratar corretamente a expiração da sessão
+
+---
+
+## Impacto
+
+- Bloqueia a conclusão da compra
+- Impede testes e utilização da plataforma
+- Afeta diretamente o fluxo principal (login → compra)
+
+---
+
+## Severidade
+
+🔴 Alta
+
+---
+
+## Possíveis Causas (Hipóteses)
+
+- Token de sessão expira prematuramente
+- Problemas no gerenciamento de cookies/localStorage
+- Timeout de sessão demasiado curto
+
+---
+
+## Evidência
+
+- Screenshot anexado demonstrando a mensagem de erro apresentada na página de login.
+
